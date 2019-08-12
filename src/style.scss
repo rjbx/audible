@@ -1,0 +1,24 @@
+body {
+  header {
+    h1 {
+      font-size: calc(18px + 2vmin);
+    }
+  }
+  main {
+    section#drum-board {
+      height: 50vh;
+      align-items: center;
+      div.column-container {
+        button.drum-pad {
+        }
+      }
+    }
+    section#display {
+      height: 10vh;
+      div.indicator-container {
+        p.key-indicator {
+        }
+      }
+    }
+  }
+}
