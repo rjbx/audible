@@ -14,69 +14,78 @@
     
   </head>
   <body id="drum-machine" class="container-fluid">
-    <header class="d-flex flex-row justify-content-around">
-      <h1 class="indicator-container text-center flex-column flex-fill p-4 m-0">Multioctave Synthesizer</h1>
+    <header class="d-flex flex-row">
+      <h1 class="indicator-container text-center flex-column flex-fill pt-4 pb-1">Simple Synthesizer</h1>
     </header>
-    <main>
-      <section id="drum-board" class="d-flex flex-row justify-content-around pl-4 pr-4">
+    <main> 
+      <section id="rotate-message" class="d-none">
+        <h5>Rotate your device
+        </h5>
+      </section>
+      <section id="drum-board" class="d-flex flex-row flex-justify-content-around pl-4 pr-4">
         <div class="column-container flex-column flex-fill"> 
-          <button class="btn btn-block btn-primary" disabled></button>
+          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
           <button id="c-pad" class="drum-pad btn btn-block btn-success">C</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div> 
         <div class="column-container flex-column flex-fill">
           <button id="c#-pad" class="drum-pad btn btn-block btn-primary">C#</button>
           <button id="d-pad" class="drum-pad btn btn-block btn-success">D</button>
-          <button class="btn btn-block btn-warning" disabled>Chime</button>
+          <button id="sine-pad" class="drum-pad  btn btn-block btn-warning">∿</button>
         </div>
         <div class="column-container flex-column flex-fill">
           <button id="eb-pad" class="drum-pad btn btn-block btn-primary">Eb</button>
           <button id="e-pad" class="drum-pad btn btn-block btn-success">E</button>
-          <button class="btn btn-block btn-warning" disabled>Piano</button>
+          <button id="square-pad" class="drum-pad  btn btn-block btn-warning">⊓</button>
         </div>
         <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block btn-primary" disabled></button>
+          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
           <button id="f-pad" class="drum-pad btn btn-block btn-success">F</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div>
         <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block btn-primary" disabled></button>
+          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
           <button id="f#-pad" class="drum-pad btn btn-block btn-success">F#</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div>
         <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block btn-primary" disabled></button>
+          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
           <button id="g-pad" class="drum-pad btn btn-block btn-success">G</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div>
         <div class="column-container flex-column flex-fill">
           <button id="g#-pad" class="drum-pad btn btn-block btn-primary">G#</button>
           <button id="a-pad" class="drum-pad btn btn-block btn-success">A</button>
-          <button class="btn btn-block btn-warning" disabled>Violin</button>
+          <button id="triangle-pad" class="btn btn-block btn-warning drum-pad ">v</button>
         </div>
                 <div class="column-container flex-column flex-fill">
           <button id="bb-pad" class="drum-pad btn btn-block btn-primary">Bb</button>
           <button id="b-pad" class="drum-pad btn btn-block btn-success">B</button>
-          <button class="btn btn-block btn-warning" disabled>Guitar</button>
+          <button id="sawtooth-pad" class="drum-pad btn btn-block btn-warning">ᴎ</button>
         </div>
-         <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block btn-primary" disabled></button>
-          <button id="lower-pad" class="drum-pad btn btn-block btn-success ">—</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+         <div class="column-container flex-column pl-4">
+          <button id="" class="btn btn-block rounded-0 btn-primary" disabled></button>
+          <button id="lower-pad" class="drum-pad btn btn-block btn-success">—</button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div>
-         <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block btn-primary" disabled></button>
-          <button id="raise-pad" class="drum-pad btn btn-block btn-success">+</button>
-          <button class="btn btn-block btn-warning" disabled></button>
+         <div class="column-container flex-column">
+          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
+          <button id="raise-pad" class="drum-pad btn btn-block btn-success">＋</button>
+          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
         </div>
       </section>
-      <section id="display" class="d-flex flex-row justify-content-around">
+<!--       <section id="display" class="d-flex flex-row justify-content-around">
         <div class="indicator-container text-center flex-column flex-fill p-4">
           <p id="key-indicator" class="display text-white bg-dark p-2">0
           </p>
         </div>
-      </section>
+      </section> -->
     </main>
+    <footer>
+      <section>
+      <p><small>Made by <a target=_blank href="https://github.com/rjbx">rjbx</a> with <a target=_blank href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">WebAudio</a>, <a target=_blank href="https://getbootstrap.com">Bootstrap</a>, <a target=_blank href="https://sass-lang.com">Sass</a> and <a target=_blank href="https://jquery.com">jQuery</a></small></p>
+      </section>
+    </footer>
   </body>
 </html>
 <!-- partial -->

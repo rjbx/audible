@@ -1,0 +1,47 @@
+body a {
+  color: #FF5500;
+}
+body header h1 {
+  font-size: calc(18px + 2vmin);
+}
+body main section#drum-board {
+  height: 70vh;
+  align-items: center;
+}
+body main section#drum-board div.column-container button.drum-pad {
+  border: 1px inset #AAA;
+}
+body main section#drum-board div.column-container button.drum-pad:active {
+  border: none;
+}
+body main section#display {
+  height: 10vh;
+}
+body footer {
+  width: 100%;
+  position: absolute;
+  bottom: 1vh;
+}
+body footer section {
+  text-align: center;
+}
+
+@media only screen and (max-width: 450px) {
+  #drum-board {
+    display: none !important;
+  }
+
+  #rotate-message {
+    display: inline !important;
+    height: 70vh;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 600px) {
+  body {
+    padding: 0px !important;
+  }
+  body #drum-board {
+    padding: 0px !important;
+  }
+}

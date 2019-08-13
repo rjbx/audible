@@ -1,9 +1,21 @@
 let shift = 1;
+let type = "sine";
+
 function idToShift(id) {
   switch(id) {
     case "raise-pad": return shift*2;
     case "lower-pad": return shift*0.5;
     default: return shift;
+  }
+}
+
+function idToType(id) {
+  switch(id) {
+    case "sine-pad": return "sine";
+    case "square-pad": return "square";
+    case "triangle-pad": return "triangle";
+    case "sawtooth-pad": return "sawtooth";
+    default: return type;
   }
 }
 
@@ -23,6 +35,10 @@ function keyToId(key) {
     case 108: return "b-pad";
     case 222: return "raise-pad";
     case 186: return "lower-pad";
+    case 120: return "sine-pad";
+    case 099: return "square-pad";
+    case 044: return "triangle-pad";
+    case 046: return "sawtooth-pad";
     default: return "";
   }
 }
@@ -54,8 +70,9 @@ function frequencyToSound(frequency) {
   let  gain = context.createGain();
   osc.connect(gain);
   gain.connect(context.destination);
-  gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 5);
+  gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3);
   osc.frequency.value = frequency;
+  osc.type = type;
   return osc;
 }
 
@@ -86,12 +103,14 @@ $(document).ready(function() {
   $('.drum-pad').on('click', () => {
     let id = event.target.id;
     shift = idToShift(id);
+    type = idToType(id);
     playPad(id);
   })
   
   $(document).keypress((e) => {
     let key = e.which;
     let id = keyToId(key);
+    type = idToType(id);
     playPad(id);
   })
   
