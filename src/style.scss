@@ -2,28 +2,30 @@ body {
   a {
     color: #FF5500;
   }
+  a:hover {
+    color: #FFAA00;
+    text-decoration: none;
+  }
   header {
     h1 {
       font-size: calc(18px + 2vmin);
     }
   }
   main {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    height: 70vh;
     section#drum-board {
-      height: 70vh;
-      align-items: center;
+      background-color: #fff;
+      width: 100%;
       div.column-container {
+        padding: 0;
         button.drum-pad {
           border: 1px solid #000;
         }
         button.drum-pad:active, button.drum-pad.active {
           border: 1px solid #FFF;
-        }
-      }
-    }
-    section#display {
-      height: 10vh;
-      div.indicator-container {
-        p.key-indicator {
         }
       }
     }
@@ -55,10 +57,5 @@ body {
     #drum-board {
       padding: 0px !important;
     }
-  }
-}
-@media only screen and (max-height: 220px) {
-  footer {
-    display: none !important;
   }
 }

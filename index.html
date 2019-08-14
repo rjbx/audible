@@ -15,71 +15,105 @@
   </head>
   <body id="drum-machine" class="container-fluid">
     <header class="d-flex flex-row">
-      <h1 class="indicator-container text-center flex-column flex-fill pt-4 pb-1"><a target=_blank href="https://codepen.io/rjbx/full/Lwgrqg">Simple Synthesizer</a></h1>
+      <h1 class="indicator-container text-center column flex-fill pt-4 pb-1"><a target=_blank href="https://codepen.io/rjbx/full/Lwgrqg">Simple Synthesizer</a></h1>
     </header>
     <main> 
       <section id="rotate-message" class="d-none">
         <h5>Rotate your device
         </h5>
       </section>
-      <section id="drum-board" class="d-flex flex-row flex-justify-content-around pl-4 pr-4">
-        <div class="column-container flex-column flex-fill"> 
-          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="c-pad" class="drum-pad btn btn-block btn-success">C</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
-        </div> 
-        <div class="column-container flex-column flex-fill">
-          <button id="cs-pad" class="drum-pad btn btn-block btn-primary">C#</button>
-          <button id="d-pad" class="drum-pad btn btn-block btn-success">D</button>
-          <button id="sine-pad" class="drum-pad  btn btn-block btn-warning">∿</button>
+      <section id="drum-board" >
+        <div class="d-flex flex-row align-items-end">
+          <div class="column-container flex-fill col-1">
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button class="drum-pad rounded-0 btn btn-block btn-primary" disabled>&nbsp;</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="cs-pad" class="drum-pad btn btn-block btn-primary">C#</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="ef-pad" class="drum-pad btn btn-block btn-primary">Eb</button>
+          </div>
+          <div class="column-container flex-fill col-4">
+            <button id="display" class="drum-pad btn btn-block btn-dark">&nbsp;</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="gs-pad" class="drum-pad btn btn-block btn-primary">G#</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="bf-pad" class="drum-pad btn btn-block btn-primary">Bb</button>
+          </div>
+        <div class="column-container flex-fill col-1">
+            <button class="drum-pad rounded-0 btn btn-block btn-primary" disabled>&nbsp;</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+          </div>
         </div>
-        <div class="column-container flex-column flex-fill">
-          <button id="ef-pad" class="drum-pad btn btn-block btn-primary">Eb</button>
-          <button id="e-pad" class="drum-pad btn btn-block btn-success">E</button>
-          <button id="square-pad" class="drum-pad  btn btn-block btn-warning">⊓</button>
+        <div class="d-flex flex-row align-items-end">
+          <div class="column-container flex-fill col-1">
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="c-pad" class="drum-pad btn btn-block btn-success">C</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="d-pad" class="drum-pad btn btn-block btn-success">D</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="e-pad" class="drum-pad btn btn-block btn-success">E</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="f-pad" class="drum-pad btn btn-block btn-success">F</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="fs-pad" class="drum-pad btn btn-block btn-success">F#</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="g-pad" class="drum-pad btn btn-block btn-success">G</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="a-pad" class="drum-pad btn btn-block btn-success">A</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="b-pad" class="drum-pad btn btn-block btn-success">B</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="lower-pad" class="drum-pad btn btn-block btn-success">—</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="raise-pad" class="drum-pad btn btn-block btn-success">＋</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+          </div>
         </div>
-        <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="f-pad" class="drum-pad btn btn-block btn-success">F</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
-        </div>
-        <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="fs-pad" class="drum-pad btn btn-block btn-success">F#</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
-        </div>
-        <div class="column-container flex-column flex-fill">
-          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="g-pad" class="drum-pad btn btn-block btn-success">G</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
-        </div>
-        <div class="column-container flex-column flex-fill">
-          <button id="gs-pad" class="drum-pad btn btn-block btn-primary">G#</button>
-          <button id="a-pad" class="drum-pad btn btn-block btn-success">A</button>
-          <button id="triangle-pad" class="btn btn-block btn-warning drum-pad ">v</button>
-        </div>
-                <div class="column-container flex-column flex-fill">
-          <button id="bf-pad" class="drum-pad btn btn-block btn-primary">Bb</button>
-          <button id="b-pad" class="drum-pad btn btn-block btn-success">B</button>
-          <button id="sawtooth-pad" class="drum-pad btn btn-block btn-warning">ᴎ</button>
-        </div>
-         <div class="column-container flex-column pl-4">
-          <button id="" class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="lower-pad" class="drum-pad btn btn-block btn-success">—</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
-        </div>
-         <div class="column-container flex-column">
-          <button class="btn btn-block rounded-0 btn-primary" disabled></button>
-          <button id="raise-pad" class="drum-pad btn btn-block btn-success">＋</button>
-          <button class="btn btn-block rounded-0 btn-warning" disabled></button>
+        <div class="d-flex flex-row align-items-end">
+          <div class="column-container flex-fill col-1">
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button class="drum-pad rounded-0 btn btn-block btn-warning" disabled>&nbsp;</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="sine-pad" class="drum-pad btn btn-block btn-warning">∿</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="square-pad" class="drum-pad btn btn-block btn-warning">⊓</button>
+          </div>
+          <div class="column-container flex-fill col-4">
+            <button id="recorder" class="drum-pad btn btn-block btn-warning">#</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="triangle-pad" class="drum-pad btn btn-block btn-warning">v</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button id="sawtooth-pad" class="drum-pad btn btn-block btn-warning">ᴎ</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+            <button class="drum-pad rounded-0 btn btn-block btn-warning" disabled>&nbsp;</button>
+          </div>
+          <div class="column-container flex-fill col-1">
+          </div>
         </div>
       </section>
-<!--       <section id="display" class="d-flex flex-row justify-content-around">
-        <div class="indicator-container text-center flex-column flex-fill p-4">
-          <p id="key-indicator" class="display text-white bg-dark p-2">0
-          </p>
-        </div>
-      </section> -->
     </main>
     <footer>
       <section>

@@ -1,10 +1,19 @@
 let shift = 1;
 let type = "sine";
+let context;
+
+function loadAudioContext() {
+  try {
+    context = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    "Your browser does not support Web Audio API, a required component"
+  }
+}
 
 function idToShift(id) {
   switch(id) {
-    case "raise-pad": return shift*2;
-    case "lower-pad": return shift*0.5;
+    case "raise-pad": return 2;
+    case "lower-pad": return 0.5;
     default: return shift;
   }
 }
@@ -44,8 +53,9 @@ function keydownToId(key) {
 }
 
 function keypressToId(key) {
+  console.log(key);
   switch(key) {
-    case 097: return "c-pad";
+    case 97: return "c-pad";
     case 119: return "cs-pad";
     case 115: return "d-pad";
     case 101: return "ef-pad";
@@ -57,13 +67,13 @@ function keypressToId(key) {
     case 107: return "a-pad";
     case 111: return "bf-pad";
     case 108: return "b-pad";
-    case 039: return "raise-pad";
-    case 059: return "lower-pad";
+    case 39: return "raise-pad";
+    case 59: return "lower-pad";
     case 122: return "sine-pad";
     case 120: return "square-pad";
-    case 044: return "triangle-pad";
-    case 046: return "sawtooth-pad";
-    default: return "";
+    case 44: return "triangle-pad";
+    case 46: return "sawtooth-pad";
+    default: return '';
   }
 }
 
@@ -86,44 +96,52 @@ function idToFrequency(id) {
 }
 
 function frequencyToSound(frequency) {
-  // Credit to: 
-  // https://marcgg.com/blog/2016/11/01/javascript-audio/ 
-  // for the tutorial on AudioContext
-  let context = new AudioContext();
+  
   let osc = context.createOscillator();
   let  gain = context.createGain();
   osc.connect(gain);
   gain.connect(context.destination);
-  gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3);
+  gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5);
   osc.frequency.value = frequency;
   osc.type = type;
   return osc;
 }
 
-function frequencyToNote(frequency) {
+function idToNote(frequency) {
   switch (frequency) {
-    case 1047: return 'C';
-    case 1175: return 'D';
-    case 1245: return 'Eb';
-    case 1319: return 'E';
-    case 1397: return 'F';
-    case 1568: return 'G';
-    case 1760: return 'A';
-    case 1865: return 'Bb';
-    case 1976: return 'B';
+    case "c-pad": return 'C';
+    case "cs-pad": return 'C#';
+    case "d-pad": return 'D';
+    case "ef-pad": return 'Eb';
+    case "e-pad": return 'E';
+    case "f-pad": return 'F';
+    case "fs-pad": return 'F#';
+    case "g-pad": return 'G';
+    case "gs-pad": return 'G#';
+    case "a-pad": return 'A';
+    case "bf-pad": return 'Bb';
+    case "b-pad": return 'B';
     default: return '';
   }
 }
 
 function playPad(id) {
+  if (id == 'display') {
+    shift = 1;
+    $('#display').text('\xA0');
+    return;
+  }
   let frequency = Math.floor(idToFrequency(id) * shift);
   let sound = frequencyToSound(frequency);
-  let note = frequencyToNote(frequency);
+  let note = idToNote(id);
   sound.start(0);
-  $('#key-indicator').text(note);
+  if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
 }
 
 $(document).ready(function() {
+  
+  loadAudioContext();
+  
   $('.drum-pad').on('click', () => {
     let id = event.target.id;
     shift = idToShift(id);
