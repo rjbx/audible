@@ -1,12 +1,59 @@
 let shift = 1;
 let type = "sine";
-let context;
 
-function loadAudioContext() {
-  try {
-    context = new (window.AudioContext || window.webkitAudioContext)();
-  } catch (e) {
+function connectAudioDestination(context) {
+    
+  $('.drum-pad').on('click', () => {
+    let id = event.target.id;
+    shift = idToShift(id);
+    type = idToType(id);
+    playPad(context, id);
+  })
+  
+  $(document).keypress((e) => {
+    let key = e.which;
+    let id = keypressToId(key);
+    type = idToType(id);
+    playPad(context, id);
+  })
+  
+  $(document).keydown((e) => {
+    let key = e.which;
+    let id = keydownToId(key);
+    $('#' + id).addClass('active');
+    shift = idToShift(id);
+  })
+  
+  $(document).keyup((e) => {
+    let key = e.which;
+    let id = keydownToId(key);
+    $('#' + id).removeClass('active');
+    if (key==186 || key==222) shift = 1;
+  })
+}
+
+async function getAudioContext() {
+  return await new Promise((resolve, reject) => { 
+    try {
+      resolve(new (window.AudioContext || window.webkitAudioContext)());
+    } catch (e) {
     "Your browser does not support Web Audio API, a required component"
+    }
+  });
+}
+
+function captureMediaStream(stream) {
+  return $.ajax();
+}
+
+async function getUserMedia() {
+  try {
+      return await navigator.mediaDevices.getUserMedia(
+    {audio: true});
+  } catch (e) {
+    
+  } finally {
+    
   }
 }
 
@@ -95,7 +142,7 @@ function idToFrequency(id) {
   }
 }
 
-function frequencyToSound(frequency) {
+function frequencyToSound(context, frequency) {
   
   let osc = context.createOscillator();
   let  gain = context.createGain();
@@ -125,14 +172,14 @@ function idToNote(frequency) {
   }
 }
 
-function playPad(id) {
+function playPad(context, id) {
   if (id == 'display') {
     shift = 1;
     $('#display').text('\xA0');
     return;
   }
   let frequency = Math.floor(idToFrequency(id) * shift);
-  let sound = frequencyToSound(frequency);
+  let sound = frequencyToSound(context, frequency);
   let note = idToNote(id);
   sound.start(0);
   if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
@@ -140,34 +187,11 @@ function playPad(id) {
 
 $(document).ready(function() {
   
-  loadAudioContext();
+  getUserMedia().then((strm) => {
+    captureMediaStream(strm)
+  });
   
-  $('.drum-pad').on('click', () => {
-    let id = event.target.id;
-    shift = idToShift(id);
-    type = idToType(id);
-    playPad(id);
-  })
-  
-  $(document).keypress((e) => {
-    let key = e.which;
-    let id = keypressToId(key);
-    type = idToType(id);
-    playPad(id);
-  })
-  
-  $(document).keydown((e) => {
-    let key = e.which;
-    console.log(key);
-    let id = keydownToId(key);
-    $('#' + id).addClass('active');
-    shift = idToShift(id);
-  })
-  
-  $(document).keyup((e) => {
-    let key = e.which;
-    let id = keydownToId(key);
-    $('#' + id).removeClass('active');
-    if (key==186 || key==222) shift = 1;
-  })
+  getAudioContext().then((ctx) => {
+    connectAudioDestination(ctx);
+  });
 });
