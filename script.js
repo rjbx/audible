@@ -19,24 +19,48 @@ function idToType(id) {
 
 }
 
-function keyToId(key) {
+function keydownToId(key) {
   switch (key) {
-    case 097:return "c-pad";
-    case 119:return "c#-pad";
-    case 115:return "d-pad";
-    case 101:return "e-pad";
-    case 100:return "eb-pad";
-    case 102:return "f-pad";
-    case 103:return "f#-pad";
-    case 106:return "g-pad";
-    case 105:return "g#-pad";
-    case 107:return "a-pad";
-    case 111:return "bb-pad";
-    case 108:return "b-pad";
+    case 65:return "c-pad";
+    case 87:return "cs-pad";
+    case 83:return "d-pad";
+    case 69:return "ef-pad";
+    case 68:return "e-pad";
+    case 70:return "f-pad";
+    case 71:return "fs-pad";
+    case 74:return "g-pad";
+    case 73:return "gs-pad";
+    case 75:return "a-pad";
+    case 79:return "bf-pad";
+    case 76:return "b-pad";
     case 222:return "raise-pad";
     case 186:return "lower-pad";
-    case 120:return "sine-pad";
-    case 099:return "square-pad";
+    case 90:return "sine-pad";
+    case 88:return "square-pad";
+    case 188:return "triangle-pad";
+    case 190:return "sawtooth-pad";
+    default:return "";}
+
+}
+
+function keypressToId(key) {
+  switch (key) {
+    case 097:return "c-pad";
+    case 119:return "cs-pad";
+    case 115:return "d-pad";
+    case 101:return "ef-pad";
+    case 100:return "e-pad";
+    case 102:return "f-pad";
+    case 103:return "fs-pad";
+    case 106:return "g-pad";
+    case 105:return "gs-pad";
+    case 107:return "a-pad";
+    case 111:return "bf-pad";
+    case 108:return "b-pad";
+    case 039:return "raise-pad";
+    case 059:return "lower-pad";
+    case 122:return "sine-pad";
+    case 120:return "square-pad";
     case 044:return "triangle-pad";
     case 046:return "sawtooth-pad";
     default:return "";}
@@ -46,16 +70,16 @@ function keyToId(key) {
 function idToFrequency(id) {
   switch (id) {
     case "c-pad":return 1047;
-    case "c#-pad":return 1109;
+    case "cs-pad":return 1109;
     case "d-pad":return 1175;
-    case "e-pad":return 1245;
-    case "eb-pad":return 1319;
+    case "ef-pad":return 1245;
+    case "e-pad":return 1319;
     case "f-pad":return 1397;
-    case "f#-pad":return 1480;
+    case "fs-pad":return 1480;
     case "g-pad":return 1568;
-    case "g#-pad":return 1661;
+    case "gs-pad":return 1661;
     case "a-pad":return 1760;
-    case "bb-pad":return 1865;
+    case "bf-pad":return 1865;
     case "b-pad":return 1976;
     default:return 0;}
 
@@ -109,19 +133,23 @@ $(document).ready(function () {
 
   $(document).keypress(e => {
     let key = e.which;
-    let id = keyToId(key);
+    let id = keypressToId(key);
     type = idToType(id);
     playPad(id);
   });
 
   $(document).keydown(e => {
     let key = e.which;
-    let id = keyToId(key);
+    console.log(key);
+    let id = keydownToId(key);
+    $('#' + id).addClass('active');
     shift = idToShift(id);
   });
 
   $(document).keyup(e => {
     let key = e.which;
+    let id = keydownToId(key);
+    $('#' + id).removeClass('active');
     if (key == 186 || key == 222) shift = 1;
   });
 });

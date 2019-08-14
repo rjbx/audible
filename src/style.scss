@@ -13,10 +13,10 @@ body {
       align-items: center;
       div.column-container {
         button.drum-pad {
-          border: 1px inset #AAA;
+          border: 1px solid #000;
         }
-        button.drum-pad:active {
-          border: none;
+        button.drum-pad:active, button.drum-pad.active {
+          border: 1px solid #FFF;
         }
       }
     }
@@ -29,6 +29,7 @@ body {
     }
   }
   footer {
+    z-index: -1;
     width: 100%;
     position: absolute;
     bottom: 1vh;
@@ -54,5 +55,10 @@ body {
     #drum-board {
       padding: 0px !important;
     }
+  }
+}
+@media only screen and (max-height: 220px) {
+  footer {
+    display: none !important;
   }
 }
