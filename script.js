@@ -12,6 +12,7 @@ function connectAudioDestination(context) {
 
   $(document).keypress(e => {
     let key = e.which;
+    console.log("press" + key);
     let id = keypressToId(key);
     type = idToType(id);
     playPad(context, id);
@@ -19,6 +20,7 @@ function connectAudioDestination(context) {
 
   $(document).keydown(e => {
     let key = e.which;
+    console.log("down" + key);
     let id = keydownToId(key);
     $('#' + id).addClass('active');
     shift = idToShift(id);
@@ -26,6 +28,7 @@ function connectAudioDestination(context) {
 
   $(document).keyup(e => {
     let key = e.which;
+    console.log("up" + key);
     let id = keydownToId(key);
     $('#' + id).removeClass('active');
     if (key == 186 || key == 222) shift = 1;
@@ -43,40 +46,64 @@ async function getAudioContext() {
 
     });
   } catch (e) {
-    console.log(e);
+    console.log(e.toString());
     window.alert("Your browser does not support Web Audio API, a required component");
   }
 }
 
 function captureMediaStream(stream) {
+
   let recorder = new MediaRecorder(stream);
+  let initial = 0;
   let chunks = [];
+  let interval;
+
   $('#record-pad').on('click',
   () => {
+    console.log('start');
     recorder.start();
-    recorder.ondataavailable(
-    () => chunks.push(e.data));
+    initial = Date.now();
+    interval = setInterval(() => {
+      let elapsed = Date.now() - initial;
+      let timer = new
+      Date(Math.floor(elapsed)).
+      toISOString().slice(12, -5);
+      $('#indicator').text(timer);
+    }, 1000);
   });
+
   $('#stop-pad').on('click',
   () => {
+    console.log('stop');
     recorder.stop();
-    recorder.onstop(() => {
-      let blob = new Blob(
-      chunks, { type: 'audio/ogg; codecs: opus' });
-      chunks = [];
-      let url = window.URL.createObjectURL(blob);
-      $('#recorder').text(url);
-    });
+    clearInterval(interval);
   });
+
+  recorder.onstop = e => {
+    console.log('onstop');
+    let blob = new Blob(
+    chunks,
+    { type: 'audio/ogg; codecs: opus' });
+
+    chunks = [];
+    let url = window.URL.createObjectURL(blob);
+    $('#recorder').attr('src', url);
+  };
+
+  recorder.ondataavailable = e => {
+    console.log('ondataavailable');
+    chunks.push(e.data);
+  };
 }
+
 
 async function getUserMedia() {
   try {
     return await navigator.mediaDevices.getUserMedia(
     { audio: true });
   } catch (e) {
-    console.log(e);
-    window.alert("Your browser does not support Media Streams API, a required component");
+    console.log(e.toString());
+    // window.alert("Your browser does not support Media Streams API, a required component");
   }
 }
 
@@ -100,7 +127,7 @@ function idToType(id) {
 
 function keydownToId(key) {
   switch (key) {
-    case 65:return "c-pad";
+    case 65:return "cl-pad";
     case 87:return "cs-pad";
     case 83:return "d-pad";
     case 69:return "ef-pad";
@@ -108,10 +135,11 @@ function keydownToId(key) {
     case 70:return "f-pad";
     case 71:return "fs-pad";
     case 74:return "g-pad";
-    case 73:return "gs-pad";
+    case 117:return "gs-pad";
     case 75:return "a-pad";
-    case 79:return "bf-pad";
+    case 73:return "bf-pad";
     case 76:return "b-pad";
+    case 79:return "ch-pad";
     case 222:return "raise-pad";
     case 186:return "lower-pad";
     case 90:return "sine-pad";
@@ -123,9 +151,8 @@ function keydownToId(key) {
 }
 
 function keypressToId(key) {
-  console.log(key);
   switch (key) {
-    case 97:return "c-pad";
+    case 97:return "cl-pad";
     case 119:return "cs-pad";
     case 115:return "d-pad";
     case 101:return "ef-pad";
@@ -133,10 +160,11 @@ function keypressToId(key) {
     case 102:return "f-pad";
     case 103:return "fs-pad";
     case 106:return "g-pad";
-    case 105:return "gs-pad";
+    case 117:return "gs-pad";
     case 107:return "a-pad";
-    case 111:return "bf-pad";
+    case 105:return "bf-pad";
     case 108:return "b-pad";
+    case 111:return "ch-pad";
     case 39:return "raise-pad";
     case 59:return "lower-pad";
     case 122:return "sine-pad";
@@ -149,7 +177,7 @@ function keypressToId(key) {
 
 function idToFrequency(id) {
   switch (id) {
-    case "c-pad":return 1047;
+    case "cl-pad":return 1047;
     case "cs-pad":return 1109;
     case "d-pad":return 1175;
     case "ef-pad":return 1245;
@@ -161,6 +189,7 @@ function idToFrequency(id) {
     case "a-pad":return 1760;
     case "bf-pad":return 1865;
     case "b-pad":return 1976;
+    case "ch-pad":return 2093;
     default:return 0;}
 
 }
@@ -171,7 +200,9 @@ function frequencyToSound(context, frequency) {
   let gain = context.createGain();
   osc.connect(gain);
   gain.connect(context.destination);
-  gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 3.5);
+  gain.gain.exponentialRampToValueAtTime(
+  0.00001, context.currentTime + 3.5);
+
   osc.frequency.value = frequency;
   osc.type = type;
   return osc;

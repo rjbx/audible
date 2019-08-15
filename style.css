@@ -2,7 +2,7 @@ body a {
   color: #FF5500;
 }
 body a:hover {
-  color: #FFAA00;
+  color: #FFB000;
   text-decoration: none;
 }
 body header h1 {
@@ -21,6 +21,9 @@ body main section#drum-board {
 body main section#drum-board div.column-container {
   padding: 0;
 }
+body main section#drum-board div.column-container audio {
+  height: 38px;
+}
 body main section#drum-board div.column-container button.drum-pad {
   border: 1px solid #000;
 }
@@ -28,7 +31,6 @@ body main section#drum-board div.column-container button.drum-pad:active, body m
   border: 1px solid #FFF;
 }
 body footer {
-  z-index: -1;
   width: 100%;
   position: absolute;
   bottom: 1vh;
@@ -54,5 +56,10 @@ body footer section {
   }
   body #drum-board {
     padding: 0px !important;
+  }
+}
+@media only screen and (max-height: 300px) {
+  footer {
+    display: none;
   }
 }
