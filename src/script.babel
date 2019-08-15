@@ -1,13 +1,16 @@
 let shift = 1;
 let type = "sine";
+let initialized = false;
 
 function connectAudioDestination(context) {
-    
+  
+  initialized = context != null;
+  
   $('.drum-pad').on('click', () => {
     let id = event.target.id;
     shift = idToShift(id);
     type = idToType(id);
-    playPad(context, id);
+    if (id) playPad(context, id);
   })
   
   $(document).keypress((e) => {
@@ -15,7 +18,7 @@ function connectAudioDestination(context) {
     console.log("press" + key);
     let id = keypressToId(key);
     type = idToType(id);
-    playPad(context, id);
+    if (id) playPad(context, id);
   })
   
   $(document).keydown((e) => {
@@ -53,7 +56,10 @@ async function getAudioContext() {
 
 function captureMediaStream(stream) {
   
-  let recorder = new MediaRecorder(stream);
+  let node = c.createMediaStreamSource(stream);
+  node.connect(c.destination);
+  let 
+  = new MediaRecorder(stream);
   let initial = 0;
   let chunks = [];
   let interval;
@@ -135,7 +141,7 @@ function keydownToId(key) {
     case 70: return "f-pad";
     case 71: return "fs-pad";
     case 74: return "g-pad";
-    case 117: return "gs-pad";
+    case 85: return "gs-pad";
     case 75: return "a-pad";
     case 73: return "bf-pad";
     case 76: return "b-pad";
@@ -146,7 +152,8 @@ function keydownToId(key) {
     case 88: return "square-pad";
     case 188: return "triangle-pad";
     case 190: return "sawtooth-pad";
-    default: return "";
+    case 32: return "refresh-pad";
+    default: return false;
   }
 }
 
@@ -171,7 +178,8 @@ function keypressToId(key) {
     case 120: return "square-pad";
     case 44: return "triangle-pad";
     case 46: return "sawtooth-pad";
-    default: return '';
+    case 32: return "refresh-pad";
+    default: return false;
   }
 }
 
@@ -227,7 +235,7 @@ function idToNote(frequency) {
 }
 
 function playPad(context, id) {
-  if (id == 'display') {
+  if (id == 'refresh-pad') {
     shift = 1;
     $('#display').text('\xA0');
     return;
@@ -239,13 +247,31 @@ function playPad(context, id) {
   if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
 }
 
-$(document).ready(function() {
-  
-  getUserMedia().then((strm) => {
-    captureMediaStream(strm)
-  });
-  
+function initializeAudioContext() {
   getAudioContext().then((ctx) => {
     connectAudioDestination(ctx);
   });
+}
+
+$(document).ready(function() {
+  
+  $('#record-pad').on('click', () => {
+   if (initialized) {
+     console.log(c);
+    getUserMedia().then((strm) => {
+      captureMediaStream(strm)
+    });
+   }
+  });
+  
+  if (!initialized) { 
+    $('#drum-machine')
+      .on('click', initializeAudioContext());
+    $('#drum-machine')
+      .off('click', initializeAudioContext());
+    $(document)
+      .on('keypress', initializeAudioContext());
+    $(document)
+      .off('keypress', initializeAudioContext());
+  }
 });
