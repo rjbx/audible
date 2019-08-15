@@ -33,27 +33,50 @@ function connectAudioDestination(context) {
 }
 
 async function getAudioContext() {
-  return await new Promise((resolve, reject) => { 
-    try {
-      resolve(new (window.AudioContext || window.webkitAudioContext)());
-    } catch (e) {
-    "Your browser does not support Web Audio API, a required component"
-    }
-  });
+  try {
+    return await new Promise((resolve, reject) => { 
+      resolve(
+        new (
+          window.AudioContext || 
+          window.webkitAudioContext
+        )()
+      )
+    });
+  } catch (e) {
+    console.log(e);
+    window.alert("Your browser does not support Web Audio API, a required component");
+  }
 }
 
 function captureMediaStream(stream) {
-  return $.ajax();
+  let recorder = new MediaRecorder(stream);
+  let chunks = [];
+  $('#record-pad').on('click', 
+    () => {
+      recorder.start();
+      recorder.ondataavailable(
+        () => chunks.push(e.data));
+    });
+  $('#stop-pad').on('click', 
+    () => {
+      recorder.stop();
+      recorder.onstop(() => {
+        let blob = new Blob(
+          chunks, { type: 'audio/ogg; codecs: opus'});
+        chunks = [];
+        let url = window.URL.createObjectURL(blob);
+        $('#recorder').text(url);
+      });
+    });
 }
 
 async function getUserMedia() {
   try {
-      return await navigator.mediaDevices.getUserMedia(
+    return await navigator.mediaDevices.getUserMedia(
     {audio: true});
   } catch (e) {
-    
-  } finally {
-    
+    console.log(e);
+    window.alert("Your browser does not support Media Streams API, a required component");
   }
 }
 
