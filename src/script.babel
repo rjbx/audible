@@ -56,10 +56,9 @@ async function getAudioContext() {
 
 function captureMediaStream(stream) {
   
-  let node = c.createMediaStreamSource(stream);
-  node.connect(c.destination);
-  let 
-  = new MediaRecorder(stream);
+  // let node = c.createMediaStreamSource(stream);
+  // node.connect(c.destination);
+  let recorder = new MediaRecorder(stream);
   let initial = 0;
   let chunks = [];
   let interval;
@@ -93,7 +92,8 @@ function captureMediaStream(stream) {
     );
     chunks = [];
     let url = window.URL.createObjectURL(blob);
-    $('#recorder').attr('src', url);
+    $('#indicator').html(
+      '<a target=_blank href="'+ url +'">\u2B73</a>');
    };
 
   recorder.ondataavailable = (e) => { 
@@ -247,9 +247,13 @@ function playPad(context, id) {
   if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
 }
 
-function initializeAudioContext() {
+function initializeAudioContext(listener) {
   getAudioContext().then((ctx) => {
     connectAudioDestination(ctx);
+    $('#drum-machine')
+      .off('click', initializeAudioContext);
+    $(document)
+      .off('keypress', initializeAudioContext);
   });
 }
 
@@ -257,21 +261,15 @@ $(document).ready(function() {
   
   $('#record-pad').on('click', () => {
    if (initialized) {
-     console.log(c);
-    getUserMedia().then((strm) => {
-      captureMediaStream(strm)
-    });
+    getUserMedia().then((strm) =>
+      captureMediaStream(strm));
    }
   });
   
   if (!initialized) { 
     $('#drum-machine')
-      .on('click', initializeAudioContext());
-    $('#drum-machine')
-      .off('click', initializeAudioContext());
+      .on('click', initializeAudioContext);
     $(document)
-      .on('keypress', initializeAudioContext());
-    $(document)
-      .off('keypress', initializeAudioContext());
+      .on('keypress', initializeAudioContext);
   }
 });
