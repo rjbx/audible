@@ -6,11 +6,20 @@ function connectAudioDestination(context) {
   
   initialized = context != null;
   
+   
+  let d = context.createMediaStreamDestination();
+  
+  $('#record-pad').on('click', () => {
+    // let filter = context.createBiquadFilter();
+    // filter.connect(d);
+    captureMediaStream(d.stream);
+  });
+  
   $('.drum-pad').on('click', () => {
     let id = event.target.id;
     shift = idToShift(id);
     type = idToType(id);
-    if (id) playPad(context, id);
+    if (id) playPad(context, d, id);
   })
   
   $(document).keypress((e) => {
@@ -18,7 +27,7 @@ function connectAudioDestination(context) {
     console.log("press" + key);
     let id = keypressToId(key);
     type = idToType(id);
-    if (id) playPad(context, id);
+    if (id) playPad(context, d, id);
   })
   
   $(document).keydown((e) => {
@@ -56,8 +65,6 @@ async function getAudioContext() {
 
 function captureMediaStream(stream) {
   
-  // let node = c.createMediaStreamSource(stream);
-  // node.connect(c.destination);
   let recorder = new MediaRecorder(stream);
   let initial = 0;
   let chunks = [];
@@ -88,12 +95,14 @@ function captureMediaStream(stream) {
     console.log('onstop');
     let blob = new Blob(
       chunks, 
-      { type: 'audio/ogg; codecs: opus'}
+      { 'type' : 'audio/ogg; codecs=opus'}
     );
     chunks = [];
-    let url = window.URL.createObjectURL(blob);
+    let url = URL.createObjectURL(blob);
     $('#indicator').html(
-      '<a target=_blank href="'+ url +'">\u2B73</a>');
+      '<a style="display:inline-block; width:100%; height:100%" target=_blank href="'+ url +'">\u2B73</a>');
+    $('#recorder-source').attr(
+     'src', url);
    };
 
   recorder.ondataavailable = (e) => { 
@@ -103,15 +112,15 @@ function captureMediaStream(stream) {
 }
 
 
-async function getUserMedia() {
-  try {
-    return await navigator.mediaDevices.getUserMedia(
-    {audio: true});
-  } catch (e) {
-    console.log(e.toString());
-    // window.alert("Your browser does not support Media Streams API, a required component");
-  }
-}
+// async function getUserMedia() {
+//   try {
+//     return await navigator.mediaDevices.getUserMedia(
+//     {audio: true});
+//   } catch (e) {
+//     console.log(e.toString());
+//     // window.alert("Your browser does not support Media Streams API, a required component");
+//   }
+// }
 
 function idToShift(id) {
   switch(id) {
@@ -202,11 +211,12 @@ function idToFrequency(id) {
   }
 }
 
-function frequencyToSound(context, frequency) {
+function frequencyToSound(context, destination, frequency) {
   
   let osc = context.createOscillator();
   let  gain = context.createGain();
   osc.connect(gain);
+  gain.connect(destination);
   gain.connect(context.destination);
   gain.gain.exponentialRampToValueAtTime(
     0.00001, context.currentTime + 3.5
@@ -234,14 +244,14 @@ function idToNote(frequency) {
   }
 }
 
-function playPad(context, id) {
+function playPad(context, destination, id) {
   if (id == 'refresh-pad') {
     shift = 1;
     $('#display').text('\xA0');
     return;
   }
   let frequency = Math.floor(idToFrequency(id) * shift);
-  let sound = frequencyToSound(context, frequency);
+  let sound = frequencyToSound(context, destination, frequency);
   let note = idToNote(id);
   sound.start(0);
   if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
@@ -258,13 +268,6 @@ function initializeAudioContext(listener) {
 }
 
 $(document).ready(function() {
-  
-  $('#record-pad').on('click', () => {
-   if (initialized) {
-    getUserMedia().then((strm) =>
-      captureMediaStream(strm));
-   }
-  });
   
   if (!initialized) { 
     $('#drum-machine')
