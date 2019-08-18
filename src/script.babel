@@ -10,9 +10,10 @@ function connectAudioDestination(context) {
   let d = context.createMediaStreamDestination();
   
   $('#record-pad').on('click', () => {
-    // let filter = context.createBiquadFilter();
-    // filter.connect(d);
     captureMediaStream(d.stream);
+    $('#indicator').text('0:00:00');
+    $('#record-pad').unbind();
+    $('#record-pad').attr('disabled', true);
   });
   
   $('.drum-pad').on('click', () => {
@@ -70,19 +71,16 @@ function captureMediaStream(stream) {
   let chunks = [];
   let interval;
   
-  $('#record-pad').on('click', 
-    () => {
-      console.log('start');
-      recorder.start();
-      initial = Date.now();
-      interval = setInterval(() => {
-        let elapsed = Date.now() - initial;
-        let timer = new
-          Date(Math.floor(elapsed))
-          .toISOString().slice(12,-5);
-        $('#indicator').text(timer);
-      }, 1000);
-    });
+  console.log('start');
+  recorder.start();
+  initial = Date.now();
+  interval = setInterval(() => {
+    let elapsed = Date.now() - initial;
+    let timer = new
+    Date(Math.floor(elapsed))
+    .toISOString().slice(12,-5);
+    $('#indicator').text(timer);
+  }, 1000);
   
   $('#stop-pad').on('click', 
     () => {
@@ -100,9 +98,24 @@ function captureMediaStream(stream) {
     chunks = [];
     let url = URL.createObjectURL(blob);
     $('#indicator').html(
-      '<a style="display:inline-block; width:100%; height:100%" target=_blank href="'+ url +'">\u2B73</a>');
-    $('#recorder-source').attr(
-     'src', url);
+      '<a style="display:inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="'+ url +'">\u2B73</a>');
+    $('#recorder').attr('src', url);
+    $('#record-pad').attr('disabled', false);
+    $('#record-pad').text('♻');
+    $('#record-pad').on('click', (e) => {
+      if ($('#record-pad').text() != '♻') return;
+      // $('#recorder').attr('src','');
+      // $('#record-pad').text('⏺');
+      // $('#record-pad').on(
+      //   'click', () => {
+      //     captureMediaStream(stream);
+      //     $('#indicator').text('0:00:00');
+      //     $('#record-pad').unbind();
+      //     $('#record-pad').attr('disabled', true);
+      //   }
+      // );
+      history.go(0);
+    });
    };
 
   recorder.ondataavailable = (e) => { 
@@ -258,9 +271,11 @@ function playPad(context, destination, id) {
 }
 
 function initializeAudioContext(listener) {
+  
   getAudioContext().then((ctx) => {
     connectAudioDestination(ctx);
-    $('#drum-machine')
+    $('#display').text('\xA0');
+    $('#display')
       .off('click', initializeAudioContext);
     $(document)
       .off('keypress', initializeAudioContext);
@@ -270,7 +285,7 @@ function initializeAudioContext(listener) {
 $(document).ready(function() {
   
   if (!initialized) { 
-    $('#drum-machine')
+    $('#display')
       .on('click', initializeAudioContext);
     $(document)
       .on('keypress', initializeAudioContext);
