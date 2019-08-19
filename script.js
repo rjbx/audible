@@ -1,39 +1,39 @@
 // I/O
 let context = false;
 let speakerNode = false;
-let recordNode = false;
+let recorderNode = false;
 
 // Prefs
 let shift = 1;
 let type = "sine";
 
 // View IDs
-let display = '#display';
-let indicator = '#indicator';
-let player = '#player';
-let record = '#record';
-let stop = '#stop';
-let refresh = '#refresh';
-let raiseFreq = '#raise';
-let lowerFreq = '#lower';
-let sineWave = '#sine';
-let squareWave = '#square';
-let triangleWave = '#triangle';
-let sawtoothWave = '#sawtooth';
-let clSound = '#cl';
-let csSound = '#cs';
-let dSound = '#d';
-let efSound = '#ef';
-let eSound = '#e';
-let fSound = '#f';
-let fsSound = '#fs';
-let gSound = '#g';
-let gsSound = '#gs';
-let aSound = '#a';
-let bfSound = '#bf';
-let bSound = '#b';
-let chSound = '#ch';
-let sound = '.sound-pad';
+const display = '#display';
+const indicator = '#indicator';
+const player = '#player';
+const record = '#record';
+const stop = '#stop';
+const refresh = '#refresh';
+const raiseFreq = '#raise';
+const lowerFreq = '#lower';
+const sineWave = '#sine';
+const squareWave = '#square';
+const triangleWave = '#triangle';
+const sawtoothWave = '#sawtooth';
+const clSound = '#cl';
+const csSound = '#cs';
+const dSound = '#d';
+const efSound = '#ef';
+const eSound = '#e';
+const fSound = '#f';
+const fsSound = '#fs';
+const gSound = '#g';
+const gsSound = '#gs';
+const aSound = '#a';
+const bfSound = '#bf';
+const bSound = '#b';
+const chSound = '#ch';
+const sound = '.sound-pad';
 
 $(document).ready(function () {
   if (!context) {
@@ -45,16 +45,21 @@ $(document).ready(function () {
 });
 
 function initializeAudioContext(listener) {
-  getAudioContext().then(c => {
-    context = c;
+  getAudioContext().
+  then(
+  value => {
+    context = value;
     speakerNode = context.destination;
-    recordNode = context.createMediaStreamDestination();
+    recorderNode = context.createMediaStreamDestination();
     connectAudioDestination();
     $(display).text('\xA0');
     $(display).
     off('click', initializeAudioContext);
     $(document).
     off('keypress', initializeAudioContext);
+  }).catch(
+  reason => {
+    console.log(reason);
   });
 }
 
@@ -67,10 +72,13 @@ async function getAudioContext() {
       window.webkitAudioContext)());
 
 
+      reject(
+      "Your browser rejected a request to access the Web Audio API, a required component");
+
     });
   } catch (e) {
     console.log(e.toString());
-    window.alert("Your browser does not support Web Audio API, a required component");
+    window.alert("An error occurred while attempting to play sound through your browser. Review your local settings and try again.");
   }
 }
 
@@ -79,7 +87,7 @@ function connectAudioDestination() {
   $(record).on('click', () => {
     $(record).unbind();
     $(record).attr('disabled', true);
-    captureMediaStream(recordNode.stream);
+    captureMediaStream(recorderNode.stream);
   });
 
   $(sound).on('click', () => {
@@ -87,7 +95,7 @@ function connectAudioDestination() {
     console.log(id);
     shift = idToShift(id);
     type = idToType(id);
-    if (id) playPad(id);
+    playPad(id);
   });
 
   $(document).keypress(e => {
@@ -95,13 +103,13 @@ function connectAudioDestination() {
     console.log("press" + key);
     let id = keypressToId(key);
     type = idToType(id);
-    if (id) playPad(id);
+    playPad(id);
   });
 
   $(document).keydown(e => {
     let key = e.which;
     console.log("down" + key);
-    let id = keydownToId(key);
+    let id = keyToId(key);
     $(id).addClass('active');
     shift = idToShift(id);
   });
@@ -109,7 +117,7 @@ function connectAudioDestination() {
   $(document).keyup(e => {
     let key = e.which;
     console.log("up" + key);
-    let id = keydownToId(key);
+    let id = keyToId(key);
     $(id).removeClass('active');
     if (key == 186 || key == 222) shift = 1;
   });
@@ -182,7 +190,7 @@ function idToType(id) {
 
 }
 
-function keydownToId(key) {
+function keyToId(key) {
   switch (key) {
     case 65:return clSound;
     case 87:return csSound;
