@@ -1,51 +1,61 @@
+// I/O
+let context = false;
+let speakerNode = false;
+let recordNode = false;
+
+// Prefs
 let shift = 1;
 let type = "sine";
-let initialized = false;
 
-function connectAudioDestination(context) {
-  
-  initialized = context != null;
-  
-   
-  let d = context.createMediaStreamDestination();
-  
-  $('#record-pad').on('click', () => {
-    captureMediaStream(d.stream);
-    $('#indicator').text('0:00:00');
-    $('#record-pad').unbind();
-    $('#record-pad').attr('disabled', true);
+// View IDs
+let display = '#display';
+let indicator = '#indicator';
+let player = '#player';
+let record = '#record';
+let stop = '#stop';
+let refresh = '#refresh';
+let raiseFreq = '#raise';
+let lowerFreq = '#lower';
+let sineWave = '#sine';
+let squareWave = '#square';
+let triangleWave = '#triangle';
+let sawtoothWave = '#sawtooth';
+let clSound = '#cl';
+let csSound = '#cs';
+let dSound = '#d';
+let efSound = '#ef';
+let eSound = '#e';
+let fSound = '#f';
+let fsSound = '#fs';
+let gSound = '#g';
+let gsSound = '#gs';
+let aSound = '#a';
+let bfSound = '#bf';
+let bSound = '#b';
+let chSound = '#ch';
+let sound = '.sound-pad'
+
+$(document).ready(function() {
+  if (!context) { 
+    $(display)
+      .on('click', initializeAudioContext);
+    $(document)
+      .on('keypress', initializeAudioContext);
+  }
+});
+
+function initializeAudioContext(listener) {
+  getAudioContext().then((c) => {
+    context = c;
+    speakerNode = context.destination;
+    recordNode = context.createMediaStreamDestination();
+    connectAudioDestination();
+    $(display).text('\xA0');
+    $(display)
+      .off('click', initializeAudioContext);
+    $(document)
+      .off('keypress', initializeAudioContext);
   });
-  
-  $('.drum-pad').on('click', () => {
-    let id = event.target.id;
-    shift = idToShift(id);
-    type = idToType(id);
-    if (id) playPad(context, d, id);
-  })
-  
-  $(document).keypress((e) => {
-    let key = e.which;
-    console.log("press" + key);
-    let id = keypressToId(key);
-    type = idToType(id);
-    if (id) playPad(context, d, id);
-  })
-  
-  $(document).keydown((e) => {
-    let key = e.which;
-    console.log("down" + key)
-    let id = keydownToId(key);
-    $('#' + id).addClass('active');
-    shift = idToShift(id);
-  })
-  
-  $(document).keyup((e) => {
-    let key = e.which;
-    console.log("up" + key);
-    let id = keydownToId(key);
-    $('#' + id).removeClass('active');
-    if (key==186 || key==222) shift = 1;
-  })
 }
 
 async function getAudioContext() {
@@ -64,6 +74,47 @@ async function getAudioContext() {
   }
 }
 
+function connectAudioDestination() {
+  
+  $(record).on('click', () => {
+    $(record).unbind();
+    $(record).attr('disabled', true);
+    captureMediaStream(recordNode.stream);
+  });
+  
+  $(sound).on('click', () => {
+    let id = '#' + event.target.id;
+    console.log(id);
+    shift = idToShift(id);
+    type = idToType(id);
+    if (id) playPad(id);
+  })
+  
+  $(document).keypress((e) => {
+    let key = e.which;
+    console.log("press" + key);
+    let id = keypressToId(key);
+    type = idToType(id);
+    if (id) playPad(id);
+  })
+  
+  $(document).keydown((e) => {
+    let key = e.which;
+    console.log("down" + key)
+    let id = keydownToId(key);
+    $(id).addClass('active');
+    shift = idToShift(id);
+  })
+  
+  $(document).keyup((e) => {
+    let key = e.which;
+    console.log("up" + key);
+    let id = keydownToId(key);
+    $(id).removeClass('active');
+    if (key==186 || key==222) shift = 1;
+  })
+}
+
 function captureMediaStream(stream) {
   
   let recorder = new MediaRecorder(stream);
@@ -74,46 +125,35 @@ function captureMediaStream(stream) {
   console.log('start');
   recorder.start();
   initial = Date.now();
+  
+  $(indicator).text('0:00:00');
   interval = setInterval(() => {
     let elapsed = Date.now() - initial;
     let timer = new
     Date(Math.floor(elapsed))
     .toISOString().slice(12,-5);
-    $('#indicator').text(timer);
+    $(indicator).text(timer);
   }, 1000);
-  
-  $('#stop-pad').on('click', 
+   
+  $(stop).on('click',
     () => {
       console.log('stop');
       recorder.stop();
       clearInterval(interval);
     });
-
+ 
   recorder.onstop = (e) => {
     console.log('onstop');
     let blob = new Blob(
       chunks, 
-      { 'type' : 'audio/ogg; codecs=opus'}
+      { 'type' : 'audio/ogg; codecs=opus' }
     );
     chunks = [];
     let url = URL.createObjectURL(blob);
-    $('#indicator').html(
-      '<a style="display:inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="'+ url +'">\u2B73</a>');
-    $('#recorder').attr('src', url);
-    $('#record-pad').attr('disabled', false);
-    $('#record-pad').text('♻');
-    $('#record-pad').on('click', (e) => {
-      if ($('#record-pad').text() != '♻') return;
-      // $('#recorder').attr('src','');
-      // $('#record-pad').text('⏺');
-      // $('#record-pad').on(
-      //   'click', () => {
-      //     captureMediaStream(stream);
-      //     $('#indicator').text('0:00:00');
-      //     $('#record-pad').unbind();
-      //     $('#record-pad').attr('disabled', true);
-      //   }
-      // );
+    $(indicator).html(
+      '<a style="$(display):inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="'+ url +'">\u2B73</a>');
+    $(record).on('click', (e) => {
+      if ($(record).text() != '♻') return;
       history.go(0);
     });
    };
@@ -124,113 +164,102 @@ function captureMediaStream(stream) {
   };
 }
 
-
-// async function getUserMedia() {
-//   try {
-//     return await navigator.mediaDevices.getUserMedia(
-//     {audio: true});
-//   } catch (e) {
-//     console.log(e.toString());
-//     // window.alert("Your browser does not support Media Streams API, a required component");
-//   }
-// }
-
 function idToShift(id) {
   switch(id) {
-    case "raise-pad": return 2;
-    case "lower-pad": return 0.5;
+    case raiseFreq: return 2;
+    case lowerFreq: return 0.5;
     default: return shift;
   }
 }
 
 function idToType(id) {
   switch(id) {
-    case "sine-pad": return "sine";
-    case "square-pad": return "square";
-    case "triangle-pad": return "triangle";
-    case "sawtooth-pad": return "sawtooth";
+    case sineWave: return "sine";
+    case squareWave: return "square";
+    case triangleWave: return "triangle";
+    case sawtoothWave: return "sawtooth";
     default: return type;
   }
 }
 
 function keydownToId(key) {
   switch(key) {
-    case 65: return "cl-pad";
-    case 87: return "cs-pad";
-    case 83: return "d-pad";
-    case 69: return "ef-pad";
-    case 68: return "e-pad";
-    case 70: return "f-pad";
-    case 71: return "fs-pad";
-    case 74: return "g-pad";
-    case 85: return "gs-pad";
-    case 75: return "a-pad";
-    case 73: return "bf-pad";
-    case 76: return "b-pad";
-    case 79: return "ch-pad";
-    case 222: return "raise-pad";
-    case 186: return "lower-pad";
-    case 90: return "sine-pad";
-    case 88: return "square-pad";
-    case 188: return "triangle-pad";
-    case 190: return "sawtooth-pad";
-    case 32: return "refresh-pad";
+    case 65: return clSound;
+    case 87: return csSound;
+    case 83: return dSound;
+    case 69: return efSound;
+    case 68: return eSound;
+    case 70: return fSound;
+    case 71: return fsSound;
+    case 74: return gSound;
+    case 85: return gsSound;
+    case 75: return aSound;
+    case 73: return bfSound;
+    case 76: return bSound;
+    case 79: return chSound;
+    case 222: return raiseFreq;
+    case 186: return lowerFreq;
+    case 90: return sineWave;
+    case 88: return squareWave;
+    case 188: return triangleWave;
+    case 190: return sawtoothWave;
+    case 32: return refresh;
     default: return false;
   }
 }
 
 function keypressToId(key) {
   switch(key) {
-    case 97: return "cl-pad";
-    case 119: return "cs-pad";
-    case 115: return "d-pad";
-    case 101: return "ef-pad";
-    case 100: return "e-pad";
-    case 102: return "f-pad";
-    case 103: return "fs-pad";
-    case 106: return "g-pad";
-    case 117: return "gs-pad";
-    case 107: return "a-pad";
-    case 105: return "bf-pad";
-    case 108: return "b-pad";
-    case 111: return "ch-pad";
-    case 39: return "raise-pad";
-    case 59: return "lower-pad";
-    case 122: return "sine-pad";
-    case 120: return "square-pad";
-    case 44: return "triangle-pad";
-    case 46: return "sawtooth-pad";
-    case 32: return "refresh-pad";
+    case 97: return clSound;
+    case 119: return csSound;
+    case 115: return dSound;
+    case 101: return efSound;
+    case 100: return eSound;
+    case 102: return fSound;
+    case 103: return fsSound;
+    case 106: return gSound;
+    case 117: return gsSound;
+    case 107: return aSound;
+    case 105: return bfSound;
+    case 108: return bSound;
+    case 111: return chSound;
+    case 39: return raiseFreq;
+    case 59: return lowerFreq;
+    case 122: return sineWave;
+    case 120: return squareWave;
+    case 44: return triangleWave;
+    case 46: return sawtoothWave;
+    case 32: return refresh;
     default: return false;
   }
 }
 
 function idToFrequency(id) {
   switch(id) {
-    case "cl-pad": return 1047;
-    case "cs-pad": return 1109;
-    case "d-pad": return 1175;
-    case "ef-pad": return 1245;
-    case "e-pad": return 1319;
-    case "f-pad": return 1397;
-    case "fs-pad": return 1480;
-    case "g-pad": return 1568;
-    case "gs-pad": return 1661;
-    case "a-pad": return 1760;
-    case "bf-pad": return 1865;
-    case "b-pad": return 1976;
-    case "ch-pad": return 2093;
+    case clSound: return 1047;
+    case csSound: return 1109;
+    case dSound: return 1175;
+    case efSound: return 1245;
+    case eSound: return 1319;
+    case fSound: return 1397;
+    case fsSound: return 1480;
+    case gSound: return 1568;
+    case gsSound: return 1661;
+    case aSound: return 1760;
+    case bfSound: return 1865;
+    case bSound: return 1976;
+    case chSound: return 2093;
     default: return 0;
   }
 }
 
-function frequencyToSound(context, destination, frequency) {
+function frequencyToSound(frequency) {
   
   let osc = context.createOscillator();
   let  gain = context.createGain();
   osc.connect(gain);
-  gain.connect(destination);
-  gain.connect(context.destination);
+  gain.connect(recordNode);
+  gain.connect(speakerNode);
   gain.gain.exponentialRampToValueAtTime(
     0.00001, context.currentTime + 3.5
   );
@@ -241,53 +270,35 @@ function frequencyToSound(context, destination, frequency) {
 
 function idToNote(frequency) {
   switch (frequency) {
-    case "c-pad": return 'C';
-    case "cs-pad": return 'C#';
-    case "d-pad": return 'D';
-    case "ef-pad": return 'Eb';
-    case "e-pad": return 'E';
-    case "f-pad": return 'F';
-    case "fs-pad": return 'F#';
-    case "g-pad": return 'G';
-    case "gs-pad": return 'G#';
-    case "a-pad": return 'A';
-    case "bf-pad": return 'Bb';
-    case "b-pad": return 'B';
+    case clSound: return 'C';
+    case csSound: return 'C#';
+    case dSound: return 'D';
+    case efSound: return 'Eb';
+    case eSound: return 'E';
+    case fSound: return 'F';
+    case fsSound: return 'F#';
+    case gSound: return 'G';
+    case gsSound: return 'G#';
+    case aSound: return 'A';
+    case bfSound: return 'Bb';
+    case bSound: return 'B';
+    case chSound: return 'C';
     default: return '';
   }
 }
 
-function playPad(context, destination, id) {
-  if (id == 'refresh-pad') {
+function playPad(id) {
+  if (id == refresh) {
     shift = 1;
-    $('#display').text('\xA0');
+    $(display).text('\xA0');
     return;
   }
   let frequency = Math.floor(idToFrequency(id) * shift);
-  let sound = frequencyToSound(context, destination, frequency);
+  let sound = frequencyToSound(frequency);
   let note = idToNote(id);
   sound.start(0);
-  if (frequency != 0) $('#display').text(note + " " + frequency + "Hz" + " " + type);
+  if (frequency != 0) 
+    $(display).text(
+      note + " " + frequency + "Hz" + " " + type
+    );
 }
-
-function initializeAudioContext(listener) {
-  
-  getAudioContext().then((ctx) => {
-    connectAudioDestination(ctx);
-    $('#display').text('\xA0');
-    $('#display')
-      .off('click', initializeAudioContext);
-    $(document)
-      .off('keypress', initializeAudioContext);
-  });
-}
-
-$(document).ready(function() {
-  
-  if (!initialized) { 
-    $('#display')
-      .on('click', initializeAudioContext);
-    $(document)
-      .on('keypress', initializeAudioContext);
-  }
-});

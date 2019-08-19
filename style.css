@@ -14,24 +14,24 @@ body main {
   align-items: center;
   height: 70vh;
 }
-body main section#drum-board {
+body main section#sound-board {
   background-color: #fff;
   width: 100%;
 }
-body main section#drum-board div.column-container {
+body main section#sound-board div.column-container {
   padding: 0;
 }
-body main section#drum-board div.column-container audio {
+body main section#sound-board div.column-container audio {
   height: 38px;
 }
-body main section#drum-board div.column-container button.drum-pad {
+body main section#sound-board div.column-container button.sound-pad {
   border: 1px solid #000;
 }
-body main section#drum-board div.column-container button.drum-pad:active, body main section#drum-board div.column-container button.drum-pad.active {
+body main section#sound-board div.column-container button.sound-pad:active, body main section#sound-board div.column-container button.sound-pad.active {
   border: 1px solid #FFF;
 }
 body footer {
-  width: 100%;
+  width: 98%;
   position: absolute;
   bottom: 1vh;
 }
@@ -39,26 +39,7 @@ body footer section {
   text-align: center;
 }
 
-@media only screen and (max-width: 450px) {
-  #drum-board {
-    display: none !important;
-  }
-
-  #rotate-message {
-    display: inline !important;
-    height: 70vh;
-    text-align: center;
-  }
-}
-@media only screen and (max-width: 600px) {
-  body {
-    padding: 0px !important;
-  }
-  body #drum-board {
-    padding: 0px !important;
-  }
-}
-@media only screen and (max-height: 300px) {
+@media only screen and (max-height: 260px) {
   footer {
     display: none;
   }

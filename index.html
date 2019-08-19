@@ -13,45 +13,41 @@
   <head>
     
   </head>
-  <body id="drum-machine" class="container-fluid">
+  <body id="sound-machine" class="container-fluid">
     <header class="d-flex flex-row">
       <h1 class="text-center column flex-fill pt-4 pb-1"><a target=_blank href="https://codepen.io/rjbx/full/Lwgrqg">Simple Synthesizer</a></h1>
     </header>
     <main> 
-      <section id="rotate-message" class="d-none">
-        <h5>Rotate your device
-        </h5>
-      </section>
-      <section id="drum-board" >
+      <section id="sound-board" >
         <div class="d-flex flex-row align-items-end">
           <div class="column-container flex-fill col-1">
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="lower-pad" class="drum-pad rounded-0 btn btn-block btn-primary">—</button>
+            <button id="lower" class="sound-pad rounded-0 btn btn-block btn-primary">—</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="cs-pad" class="drum-pad rounded-0 btn btn-block btn-primary">C#</button>
+            <button id="cs" class="sound-pad rounded-0 btn btn-block btn-primary">C#</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="ef-pad" class="drum-pad rounded-0 btn btn-block btn-primary">Eb</button>
+            <button id="ef" class="sound-pad rounded-0 btn btn-block btn-primary">Eb</button>
           </div>
              <div class="column-container flex-fill col-1">
-            <button id="fs-pad" class="drum-pad rounded-0 btn btn-block btn-primary">F#</button>
+            <button id="fs" class="sound-pad rounded-0 btn btn-block btn-primary">F#</button>
           </div>
           <div class="column-container flex-fill col-2">
-            <button id="display" class="drum-pad rounded-0 btn btn-block btn-dark"><a style="display:inline-block; width:100%; height:100%" href="#">🗲</a></button>
+            <button id="display" class="rounded-0 btn btn-block btn-dark"><a style="display:inline-block; width:100%; height:100%" href="#">🗲</a></button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="gs-pad" class="drum-pad rounded-0 btn btn-block btn-primary">G#</button>
+            <button id="gs" class="sound-pad rounded-0 btn btn-block btn-primary">G#</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="bf-pad" class="drum-pad rounded-0 btn btn-block btn-primary">Bb</button>
+            <button id="bf" class="sound-pad rounded-0 btn btn-block btn-primary">Bb</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="refresh-pad" class="drum-pad rounded-0 btn btn-block btn-primary">↺</button>
+            <button id="refresh" class="sound-pad rounded-0 btn btn-block btn-primary">↺</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="raise-pad" class="drum-pad rounded-0 btn btn-block btn-primary">＋</button>
+            <button id="raise" class="sound-pad rounded-0 btn btn-block btn-primary">＋</button>
           </div>
           <div class="column-container flex-fill col-1">
           </div>
@@ -60,31 +56,31 @@
           <div class="column-container flex-fill col-1">
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="cl-pad" class="drum-pad rounded-0 btn btn-block btn-success">C</button>
+            <button id="cl" class="sound-pad rounded-0 btn btn-block btn-success">C</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="d-pad" class="drum-pad rounded-0 btn btn-block btn-success">D</button>
+            <button id="d" class="sound-pad rounded-0 btn btn-block btn-success">D</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="e-pad" class="drum-pad rounded-0 btn btn-block btn-success">E</button>
+            <button id="e" class="sound-pad rounded-0 btn btn-block btn-success">E</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="f-pad" class="drum-pad rounded-0 btn btn-block btn-success">F</button>
+            <button id="f" class="sound-pad rounded-0 btn btn-block btn-success">F</button>
           </div>
           <div class="column-container flex-fill col-2">
-            <button target=_blank id="indicator" class="drum-pad rounded-0 btn btn-block btn-dark">&nbsp;</button>
+            <button target=_blank id="indicator" class="rounded-0 btn btn-block btn-dark">&nbsp;</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="g-pad" class="drum-pad rounded-0 btn btn-block btn-success">G</button>
+            <button id="g" class="sound-pad rounded-0 btn btn-block btn-success">G</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="a-pad" class="drum-pad rounded-0 btn btn-block btn-success">A</button>
+            <button id="a" class="sound-pad rounded-0 btn btn-block btn-success">A</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="b-pad" class="drum-pad rounded-0 btn btn-block btn-success">B</button>
+            <button id="b" class="sound-pad rounded-0 btn btn-block btn-success">B</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="ch-pad" class="drum-pad rounded-0 btn btn-block btn-success">C</button>
+            <button id="ch" class="sound-pad rounded-0 btn btn-block btn-success">C</button>
           </div>
           <div class="column-container flex-fill col-1">
           </div>
@@ -93,25 +89,25 @@
           <div class="column-container flex-fill col-1">
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="sine-pad" class="drum-pad rounded-0 btn btn-block btn-warning">∿</button>
+            <button id="sine" class="sound-pad rounded-0 btn btn-block btn-warning">∿</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="square-pad" class="drum-pad rounded-0 btn btn-block btn-warning">⊓</button>
+            <button id="square" class="sound-pad rounded-0 btn btn-block btn-warning">⊓</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="record-pad" class="drum-pad rounded-0 btn btn-block btn-dark">⏺</button>
+            <button id="record" class="sound-pad rounded-0 btn btn-block btn-dark">⏺</button>
           </div>
           <div class="column-container flex-fill col-4">
-            <audio id="recorder" class="drum-pad rounded-0 btn btn-block bg-dark" controls="true" controlsList="nodownload"></audio>
+            <audio id="player" class="rounded-0 btn btn-block bg-dark" controls="true" controlsList="nodownload"></audio>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="stop-pad" class="drum-pad rounded-0 btn btn-block btn-dark">⏹</button>
+            <button id="stop" class="sound-pad rounded-0 btn btn-block btn-dark">⏹</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="triangle-pad" class="drum-pad rounded-0 btn btn-block btn-warning">v</button>
+            <button id="triangle" class="sound-pad rounded-0 btn btn-block btn-warning">v</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="sawtooth-pad" class="drum-pad rounded-0 btn btn-block btn-warning">ᴎ</button>
+            <button id="sawtooth" class="sound-pad rounded-0 btn btn-block btn-warning">ᴎ</button>
           </div>
           <div class="column-container flex-fill col-1">
           </div>
