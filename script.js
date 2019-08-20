@@ -63,23 +63,19 @@ function initializeAudioContext(listener) {
   });
 }
 
-async function getAudioContext() {
-  try {
-    return await new Promise((resolve, reject) => {
-      resolve(
-      new (
-      window.AudioContext ||
-      window.webkitAudioContext)());
+function getAudioContext() {
+  return new Promise((resolve, reject) => {
+    resolve(
+    new (
+    window.AudioContext ||
+    window.webkitAudioContext)());
 
 
-      reject(
-      "Your browser rejected a request to access the Web Audio API, a required component");
+    reject(
+    "Your browser rejected a request to access the Web Audio API, a required component");
 
-    });
-  } catch (e) {
-    console.log(e.toString());
-    window.alert("An error occurred while attempting to play sound through your browser. Review your local settings and try again.");
-  }
+  });
+
 }
 
 function connectAudioDestination() {
@@ -158,6 +154,7 @@ function captureMediaStream(stream) {
 
     chunks = [];
     let url = URL.createObjectURL(blob);
+    $(player).attr('src', url);
     $(indicator).html(
     '<a style="$(display):inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="' + url + '">\u2B73</a>');
     $(record).on('click', e => {
@@ -265,13 +262,14 @@ function frequencyToSound(frequency) {
 
   let osc = context.createOscillator();
   let gain = context.createGain();
-  osc.connect(gain);
-  gain.connect(recordNode);
-  gain.connect(speakerNode);
   gain.gain.exponentialRampToValueAtTime(
   0.00001, context.currentTime + 3.5);
 
+  gain.connect(recorderNode);
+  gain.connect(speakerNode);
+  osc.connect(gain);
   osc.frequency.value = frequency;
+  console.log(osc.frequency);
   osc.type = type;
   return osc;
 }
