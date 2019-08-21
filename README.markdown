@@ -1,5 +1,5 @@
 # Simple Synthesizer
- _A Pen created at CodePen.io. Original URL: [https://codepen.io/rjbx/pen/Lwgrqg](https://codepen.io/rjbx/pen/Lwgrqg).
+Plays and records musical notes. Backend made with Web Audio and MediaStream Recorder APIs; UI made with Bootstrap Flexgrid. Original CodePen: [https://codepen.io/rjbx/pen/Lwgrqg](https://codepen.io/rjbx/pen/Lwgrqg).
 
 ## Walkthrough: [Generate and record sounds with Oscillator and MediaRecorder	](https://coded.art/generate-and-record-sounds-with-oscillator-and-mediarecorder/)
 
@@ -229,7 +229,7 @@ The `AudioContext` destination property is assigned an [`AudioDestinationNode
 
 #### Save instance of MediaStream destination node
 
-####### See also: Setup — Create global fields
+###### See also: Setup — Create global fields
 
 Save a reference to the MediaStream destination node that can be accessed from the logic involving both `Oscillator` and `MediaRecorder`.
 
@@ -247,7 +247,7 @@ speakerNode = context.destination;
 
 #### Connect MediaStream node to generated sound
 
-####### See also: Generate sounds — Configure Oscillator to produce distinct sounds
+###### See also: Generate sounds — Configure Oscillator to produce distinct sounds
 
 Connecting the `Gain` to the `MediaStream` destination node copies the sound output to the recorder stream.
 
@@ -261,7 +261,7 @@ function frequencyToSound(frequency) {
 
 #### Instantiate recorder from MediaStream node
 
-####### See also: Record sounds — Instantiate MediaRecorder from MediaStream
+###### See also: Record sounds — Instantiate MediaRecorder from MediaStream
 
 Feed the stream to the `MediaRecorder`. That’s it!
 
