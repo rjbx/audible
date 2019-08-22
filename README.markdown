@@ -1,5 +1,5 @@
 # Audible
-Plays and records musical notes. Backend made with Web Audio and MediaStream Recorder APIs; UI made with Bootstrap Flexgrid. CodePen: [https://codepen.io/rjbx/pen/Lwgrqg](https://codepen.io/rjbx/pen/Lwgrqg).
+Plays and records musical notes. Backend made with Web Audio and MediaStream Recording APIs; UI made with Bootstrap Flexgrid. CodePen: [https://codepen.io/rjbx/pen/Lwgrqg](https://codepen.io/rjbx/pen/Lwgrqg).
 
 ## Walkthrough: [Generate and record sounds with Oscillator and MediaRecorder	](https://coded.art/generate-and-record-sounds-with-oscillator-and-mediarecorder/)
 
@@ -17,7 +17,7 @@ In the context of a synthesizer app, views correspond to keys for playing differ
 
 #### Create global fields
 
-The Web Audio API is built around [`AudioContext`](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext), which handles the creation as well as storage of one or a series of a processing module called an [`AudioNode`](https://developer.mozilla.org/en-US/docs/Web/API/AudioNode) Examples of an `AudioNode`, which is covered later, include a source such as an `Oscillator`, an intermediate processor such as `BiquadFilter` and `Gain`, and a destination which represents the result of all audio in the context. Because the audio in this example has two destinations — speaker and recorder — corresponding nodes are created.
+The Web Audio API is built around [`AudioContext`](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext), which handles the creation as well as storage of one or a series of a processing module called an [`AudioNode`](https://developer.mozilla.org/en-US/docs/Web/API/AudioNode). Examples of an `AudioNode`, which is covered later, include a source such as an `Oscillator`, an intermediate processor such as `BiquadFilter` and `Gain`, and a destination which represents the result of all audio in the context. Because the audio in this example has two destinations — speaker and recorder — corresponding nodes are created.
 
 ```
  // I/O  
@@ -69,13 +69,13 @@ When the asynchronous action is complete, the `Promise` is said to be settled 
 function initializeAudioContext(listener) {
   getAudioContext()
     .then(
-      value =&gt; {
+      value = {
         context = value;
         speakerNode = context.destination;
         connectAudioDestination();
         ...
     }).catch(
-      reason =&gt; {
+      reason = {
         console.log(reason);
     });
 }
@@ -125,13 +125,13 @@ For greater control, intermediate processing can be augmented by a [`BiquadFilt
 In the context of a synthesizer app, where views correspond to keys that correspond to notes on a musical scale, view interactions can be handled to identify the note by its [frequency](https://www.audiology.org/sites/default/files/ChasinConversionChart.pdf) from, for example, a switch method or key-value object associating frequencies with view IDs. Other properties including waveform type and pitch (as a frequency multiplier) could be extrapolated by the same means.
 
 ```
-$(sound).on('click', () =&gt; {
+$(sound).on('click', () = {
   let id = '#' + event.target.id;
   ...
   playPad(id);
 })
   
-$(document).keypress(e =&gt; {
+$(document).keypress(e = {
   let key = e.which;
   ...
   playPad(id);
@@ -156,7 +156,7 @@ function idToFrequency(id) {
 
 #### Instantiate MediaRecorder from MediaStream
 
-A [`MediaRecorder`](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) captures an audio or video [`MediaStream`](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) and saves it as a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) of media data that can be decoded by a media player. Calls to the `start()`, `pause()`, `resume()` and `stop()` methods control the length of the recording, with corresponding handlers fired at each call.A `MediaStream` can be generated as a destination from a sensory device or a compatible source node.
+A [`MediaRecorder`](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) captures an audio or video [`MediaStream`](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) and saves it as a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) of media data that can be decoded by a media player. Calls to the `start()`, `pause()`, `resume()` and `stop()` methods control the length of the recording, with corresponding handlers fired at each call. A `MediaStream` can be generated as a destination from a sensory device or a compatible source node.
 
 ```
 function captureMediaStream(stream) {  
@@ -184,7 +184,7 @@ Before the recording can be played back or downloaded, the data must be compiled
 
 The `ondataavailable` handler passes a data-storing event that spans the time since, either, the previous handler callback, or, the recording began. The callback occurs either when the recording ends, as well as during the recording if, either, `start()` is passed a timeslice interval argument or `requestData()` is invoked. Storing the event data in an array makes sense where multiple data chunks may be returned during a single recording.
 
-The onstop handler accesses the data array to instantiate a data `Blob` that is accessed from a URL created with `URL.createObjectURL()`. The URL can then be assigned to the source attribute of an audio player element and hyperlink reference attribute of an anchordownload element.
+The `onstop` handler accesses the data array to instantiate a data `Blob` that is accessed from a URL created with `URL.createObjectURL()`. The URL can then be assigned to the source attribute of an audio player element and hyperlink reference attribute of an anchordownload element.
 
 ```
 let chunks = [];
