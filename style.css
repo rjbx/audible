@@ -30,7 +30,7 @@ body main section#sound-board div.column-container audio {
 body main section#sound-board div.column-container button.sound-pad {
   border: 1px solid #000;
 }
-body main section#sound-board div.column-container button.sound-pad:active, body main section#sound-board div.column-container button.sound-pad.active {
+body main section#sound-board div.column-container button.sound-pad.active {
   border: 1px solid #FFF;
 }
 body main section#sound-board div.column-container button.player-control {

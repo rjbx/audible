@@ -52,7 +52,6 @@ function initializeAudioContext(listener) {
     speakerNode = context.destination;
     recorderNode = context.createMediaStreamDestination();
     connectAudioDestination();
-    $(':button').attr('background-color', '#555');
     $(display).text('\xA0');
     $(record).attr('disabled', false);
     $(stop).attr('disabled', false);
@@ -323,10 +322,9 @@ function playPad(id) {
   }
   let frequency = Math.floor(idToFrequency(id) * shift);
   let sound = frequencyToSound(frequency);
-  let note = idToNote(id);
-  sound.start(0);
+  sound.start();
   if (frequency != 0)
   $(display).text(
-  note + frequencyToPitch(frequency) + typeAsSymbol());
+  idToNote(id) + frequencyToPitch(frequency) + typeAsSymbol());
 
 }
