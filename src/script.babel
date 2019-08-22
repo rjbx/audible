@@ -52,9 +52,10 @@ function initializeAudioContext(listener) {
         speakerNode = context.destination;
         recorderNode = context.createMediaStreamDestination();
         connectAudioDestination();
+        $(':button').attr('background-color', '#555');
         $(display).text('\xA0');
-        $(display)
-          .off('click', initializeAudioContext);
+        $(record).attr('disabled', false);
+        $(stop).attr('disabled', false);
         $(document)
           .off('keypress', initializeAudioContext);
     }).catch(
@@ -148,6 +149,9 @@ function captureMediaStream(stream) {
  
   recorder.onstop = e => {
     console.log('onstop');
+    $(stop).attr('disabled', true);
+    $(record).attr('disabled', false);
+    $(record).text('♻');
     let blob = new Blob(
       chunks, 
       { 'type' : 'audio/ogg; codecs=opus' }
@@ -156,7 +160,7 @@ function captureMediaStream(stream) {
     let url = URL.createObjectURL(blob);
     $(player).attr('src', url);
     $(indicator).html(
-      '<a style="$(display):inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="'+ url +'">\u2B73</a>');
+      '<a style="display:inline-block; width:100%; height:100%" target=_blank download="recording.ogg" href="'+ url +'">\u2B73</a>');
     $(record).on('click', e => {
       if ($(record).text() != '♻') return;
       history.go(0);
@@ -274,6 +278,13 @@ function frequencyToSound(frequency) {
   return osc;
 }
 
+function frequencyToPitch(frequency) {
+  if (frequency >= 4186) return 5;
+  if (frequency >= 2093) return 4;
+  if (frequency >= 1046) return 3;
+  return 2;
+}
+
 function idToNote(frequency) {
   switch (frequency) {
     case clSound: return 'C';
@@ -293,9 +304,20 @@ function idToNote(frequency) {
   }
 }
 
+function typeAsSymbol() {
+  switch (type) {
+    case 'sine': return '∿';
+    case 'square': return '⊓';
+    case 'triangle': return 'v';
+    case 'sawtooth': return 'ᴎ';
+    default: return '';
+  }
+}
+
 function playPad(id) {
   if (id == refresh) {
     shift = 1;
+    type = 'sine';
     $(display).text('\xA0');
     return;
   }
@@ -305,6 +327,6 @@ function playPad(id) {
   sound.start(0);
   if (frequency != 0) 
     $(display).text(
-      note + " " + frequency + "Hz" + " " + type
+      note + frequencyToPitch(frequency) + typeAsSymbol()
     );
 }

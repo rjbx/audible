@@ -11,11 +11,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+  <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto+Mono&display=swap" rel="stylesheet">
   </head>
   <body id="sound-machine" class="container-fluid">
     <header class="d-flex flex-row">
-      <h1 class="text-center column flex-fill pt-4 pb-1"><a target=_blank href="https://codepen.io/rjbx/full/Lwgrqg">Simple Synthesizer</a></h1>
+      <h1 class="text-center column flex-fill pt-4 pb-1"><a target=_blank href="https://rjbx.github.io/audiator">audiator</a></h1>
     </header>
     <main> 
       <section id="sound-board" >
@@ -95,13 +95,13 @@
             <button id="square" class="sound-pad rounded-0 btn btn-block btn-warning">⊓</button>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="record" class="sound-pad rounded-0 btn btn-block btn-dark">⏺</button>
+            <button id="record" class="sound-pad player-control rounded-0 btn btn-block" disabled>⏺</button>
           </div>
           <div class="column-container flex-fill col-4">
             <audio id="player" class="rounded-0 btn btn-block bg-dark" controls="true" controlsList="nodownload"></audio>
           </div>
           <div class="column-container flex-fill col-1">
-            <button id="stop" class="sound-pad rounded-0 btn btn-block btn-dark">⏹</button>
+            <button id="stop" class="sound-pad player-control rounded-0 btn btn-block" disabled>⏹</button>
           </div>
           <div class="column-container flex-fill col-1">
             <button id="triangle" class="sound-pad rounded-0 btn btn-block btn-warning">v</button>
@@ -116,7 +116,7 @@
     </main>
     <footer>
       <section>
-      <p><small>Made by <a target=_blank href="https://github.com/rjbx">rjbx</a> with <a target=_blank href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio</a>, <a target=_blank href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API">Media Stream</a>, <a target=_blank href="https://getbootstrap.com">Bootstrap</a>, <a target=_blank href="https://sass-lang.com">Sass</a> and <a target=_blank href="https://jquery.com">jQuery</a></small></p>
+      <p><small>Made by <a target=_blank href="https://github.com/rjbx">rjbx</a> with <a target=_blank href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio</a>, <a target=_blank href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API">MediaStream Recorder</a>, <a target=_blank href="https://getbootstrap.com">Bootstrap</a>, <a target=_blank href="https://sass-lang.com">Sass</a> and <a target=_blank href="https://jquery.com">jQuery</a></small></p>
       </section>
     </footer>
   </body>

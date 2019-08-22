@@ -1,4 +1,4 @@
-# Simple Synthesizer
+# Audiator
 Plays and records musical notes. Backend made with Web Audio and MediaStream Recorder APIs; UI made with Bootstrap Flexgrid. Original CodePen: [https://codepen.io/rjbx/pen/Lwgrqg](https://codepen.io/rjbx/pen/Lwgrqg).
 
 ## Walkthrough: [Generate and record sounds with Oscillator and MediaRecorder	](https://coded.art/generate-and-record-sounds-with-oscillator-and-mediarecorder/)

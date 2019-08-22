@@ -5,8 +5,11 @@ body a:hover {
   color: #FFB000;
   text-decoration: none;
 }
+body header {
+  font-family: 'Lobster';
+}
 body header h1 {
-  font-size: calc(18px + 2vmin);
+  font-size: calc(25px + 2vmin);
 }
 body main {
   text-align: center;
@@ -30,10 +33,19 @@ body main section#sound-board div.column-container button.sound-pad {
 body main section#sound-board div.column-container button.sound-pad:active, body main section#sound-board div.column-container button.sound-pad.active {
   border: 1px solid #FFF;
 }
+body main section#sound-board div.column-container button.player-control {
+  background-color: #FF5500;
+  color: #fff;
+}
+body main section#sound-board div.column-container button.player-control:disabled {
+  background-color: #101010;
+}
 body footer {
   width: 98%;
   position: absolute;
   bottom: 1vh;
+  font-size: 12px;
+  font-family: 'Roboto Mono', monospace;
 }
 body footer section {
   text-align: center;

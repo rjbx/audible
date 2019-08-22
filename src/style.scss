@@ -8,8 +8,9 @@ body {
   }
   header {
     h1 {
-      font-size: calc(18px + 2vmin);
+      font-size: calc(25px + 2vmin);
     }
+    font-family: 'Lobster';
   }
   main {
     text-align: center;
@@ -30,6 +31,13 @@ body {
         button.sound-pad:active, button.sound-pad.active {
           border: 1px solid #FFF;
         }
+        button.player-control {
+          background-color: #FF5500;
+          color: #fff;
+        }
+        button.player-control:disabled {
+          background-color: #101010;
+        }
       }
     }
   }
@@ -37,6 +45,8 @@ body {
     width: 98%;
     position: absolute;
     bottom: 1vh;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
     section {
       text-align: center;
     }
